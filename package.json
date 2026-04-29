@@ -1,0 +1,29 @@
+{
+    "name": "bms-wav-slicer",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite",
+        "lint": "tsc && oxlint",
+        "lint:fix": "oxlint --fix",
+        "fmt": "oxfmt"
+    },
+    "dependencies": {
+        "@heroui/react": "^3.0.3",
+        "@heroui/styles": "^3.0.3",
+        "react": "^19.2.5",
+        "react-dom": "^19.2.5"
+    },
+    "devDependencies": {
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.1",
+        "oxfmt": "^0.47.0",
+        "oxlint": "^1.62.0",
+        "tailwindcss": "^4.2.4",
+        "typescript": "^6.0.3",
+        "vite": "^8.0.10"
+    },
+    "packageManager": "pnpm@11.0.0+sha512.5bd187500e49cc6c3d891d973b432c02b844a5eb7209172c90a517a3ef4f579ed5c23d409b699e6a9dc418ff7b2b1890e63f6d74f1d3fc49848f37779c89c84c"
+}
