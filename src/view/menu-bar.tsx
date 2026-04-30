@@ -4,6 +4,9 @@ import { Kbd } from "@heroui/react/kbd";
 import { Label } from "@heroui/react/label";
 import type { ReactNode } from "react";
 
+import { useDispatch } from "../model/action.js";
+import { addTrack } from "../service/add-track.js";
+
 interface MenuItemProps {
     key: string;
     name: string;
@@ -19,40 +22,41 @@ const MenuItem = ({ name, children }: MenuItemProps) => {
     );
 };
 
-const menuItems: readonly MenuItemProps[] = [
-    {
-        key: "file",
-        name: "File",
-        children: (
-            <Dropdown.Menu>
-                <Dropdown.Item id="save">
-                    <Label>Save As…</Label>
-                    <Kbd className="ms-auto" slot="keyboard" variant="light">
-                        <Kbd.Abbr keyValue="command" />
-                        <Kbd.Content>S</Kbd.Content>
-                    </Kbd>
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        ),
-    },
-    {
-        key: "track",
-        name: "Track",
-        children: (
-            <Dropdown.Menu>
-                <Dropdown.Item id="add-track">
-                    <Label>Add track…</Label>
-                    <Kbd className="ms-auto" slot="keyboard" variant="light">
-                        <Kbd.Abbr keyValue="command" />
-                        <Kbd.Content>A</Kbd.Content>
-                    </Kbd>
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        ),
-    },
-];
-
 export const MenuBar = () => {
+    const dispatch = useDispatch();
+
+    const menuItems: readonly MenuItemProps[] = [
+        {
+            key: "file",
+            name: "File",
+            children: (
+                <Dropdown.Menu>
+                    <Dropdown.Item id="save">
+                        <Label>Save As…</Label>
+                        <Kbd className="ms-auto" slot="keyboard" variant="light">
+                            <Kbd.Abbr keyValue="command" />
+                            <Kbd.Content>S</Kbd.Content>
+                        </Kbd>
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            ),
+        },
+        {
+            key: "track",
+            name: "Track",
+            children: (
+                <Dropdown.Menu>
+                    <Dropdown.Item id="add-track" onClick={() => addTrack(dispatch)}>
+                        <Label>Add track…</Label>
+                        <Kbd className="ms-auto" slot="keyboard" variant="light">
+                            <Kbd.Abbr keyValue="command" />
+                            <Kbd.Content>A</Kbd.Content>
+                        </Kbd>
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            ),
+        },
+    ];
     return (
         <div className="bg-overlay flex w-full">
             {menuItems.map((props) => (
