@@ -5,9 +5,8 @@ declare const trackBrand: unique symbol;
 export type Track = string & { [trackBrand]: never };
 
 export interface WavAsset {
-    id: number;
-    name: string;
-    data(): Promise<ArrayBuffer>;
+    id: Track;
+    file: File;
 }
 
 export interface SlicerProject {

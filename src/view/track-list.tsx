@@ -1,26 +1,47 @@
 import { Label } from "@heroui/react/label";
+import { useEffect, useRef, useState } from "react";
 
 import type { Track, WavAsset } from "../model/project.js";
+import { createWaveform, type Waveform } from "../model/waveform.js";
 
-interface TrackRowProps {
-    id: number;
-    name: string;
-    data: unknown;
+interface TrackHeadProps {
+    id: string;
+    file: File;
 }
 
-const TrackRow = ({ id, name }: TrackRowProps) => {
+const TrackHead = ({ id, file }: TrackHeadProps) => {
     return (
-        <div className="flex h-20 border-be">
-            <div className="bg-overlay flex w-40 flex-col justify-evenly border-r p-2">
-                <div className="block truncate">
-                    <Label>
-                        {id.toString().padStart(2, "0")} {name}
-                    </Label>
-                </div>
+        <div className="bg-overlay flex h-20 flex-col justify-evenly border-be">
+            <div className="block truncate p-4">
+                <Label>
+                    {id.padStart(2, "0")} {file.name}
+                </Label>
             </div>
-            <div>Track Area</div>
         </div>
     );
+};
+
+interface TrackBodyProps {
+    file: File;
+}
+
+const TrackBody = ({ file }: TrackBodyProps) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [waveform, setWaveform] = useState<Waveform | null>(null);
+    useEffect(() => {
+        const aborter = new AbortController();
+        createWaveform(file).then((wav) => {
+            if (aborter.signal.aborted) {
+                return;
+            }
+            setWaveform(wav);
+        });
+        return () => {
+            aborter.abort();
+        };
+    }, [file]);
+
+    return <canvas ref={canvasRef} className="h-20 w-full"></canvas>;
 };
 
 export interface TrackListProps {
@@ -29,10 +50,17 @@ export interface TrackListProps {
 
 export const TrackList = ({ tracks }: TrackListProps) => {
     return (
-        <div className="flex h-full w-full flex-col">
-            {Object.entries(tracks).map(([key, props]) => (
-                <TrackRow {...props} key={key} />
-            ))}
+        <div className="flex h-auto w-full">
+            <div className="sticky flex h-auto w-40 flex-col border-r">
+                {Object.entries(tracks).map(([key, props]) => (
+                    <TrackHead {...props} key={key} />
+                ))}
+            </div>
+            <div className="w-full">
+                {Object.entries(tracks).map(([key, props]) => (
+                    <TrackBody {...props} key={key} />
+                ))}
+            </div>
         </div>
     );
 };
