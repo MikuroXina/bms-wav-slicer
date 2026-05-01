@@ -15,3 +15,6 @@ declare const musicTickBrand: unique symbol;
  * Absolute tick count from the start of music.
  */
 export type MusicTick = number & { [musicTickBrand]: never };
+
+declare const microSecondBrand: unique symbol;
+export type MicroSecond = number & { [microSecondBrand]: never };

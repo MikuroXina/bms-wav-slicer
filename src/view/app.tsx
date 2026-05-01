@@ -12,7 +12,7 @@ export const App = (): JSX.Element => {
         <DispatchContext.Provider value={dispatch}>
             <main className="bg-background h-screen w-screen">
                 <MenuBar />
-                <TrackList tracks={state.assets} />
+                <TrackList tracks={state.assets} rulerMarks={state.rulerMarks} />
             </main>
         </DispatchContext.Provider>
     );

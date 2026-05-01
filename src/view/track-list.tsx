@@ -2,7 +2,9 @@ import { Label } from "@heroui/react/label";
 import { useEffect, useRef, useState } from "react";
 
 import type { Track, WavAsset } from "../model/project.js";
+import type { RulerMark } from "../model/ruler-mark.js";
 import { createWaveform, type Waveform } from "../model/waveform.js";
+import { Ruler } from "./track-list/ruler.js";
 
 interface TrackHeadProps {
     id: string;
@@ -46,17 +48,21 @@ const TrackBody = ({ file }: TrackBodyProps) => {
 
 export interface TrackListProps {
     tracks: Record<Track, WavAsset>;
+    rulerMarks: readonly RulerMark[];
 }
 
-export const TrackList = ({ tracks }: TrackListProps) => {
+export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
     return (
-        <div className="flex h-auto w-full">
-            <div className="sticky flex h-auto w-40 flex-col border-r">
+        <div className="grid w-full grid-cols-[160px_1fr] grid-rows-[20px_1fr]">
+            <div className="col-start-2 h-8">
+                <Ruler xScale={1} viewportX={0} marks={rulerMarks} />
+            </div>
+            <div className="sticky flex flex-col border-r">
                 {Object.entries(tracks).map(([key, props]) => (
                     <TrackHead {...props} key={key} />
                 ))}
             </div>
-            <div className="w-full">
+            <div>
                 {Object.entries(tracks).map(([key, props]) => (
                     <TrackBody {...props} key={key} />
                 ))}

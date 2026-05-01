@@ -14,6 +14,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.0.3
         version: 3.0.3(tailwind-merge@3.4.0)(tailwindcss@4.2.4)
+      '@sightread/jasmid.ts':
+        specifier: ^2.1.5
+        version: 2.1.5
       immer:
         specifier: ^11.1.4
         version: 11.1.4
@@ -634,6 +637,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-rc.7':
     resolution: {integrity: sha512-qujRfC8sFVInYSPPMLQByRh7zhwkGFS4+tyMQ83srV1qrxL4g8E2tyxVVyxd0+8QeBM1mIk9KbWxkegRr76XzA==}
+
+  '@sightread/jasmid.ts@2.1.5':
+    resolution: {integrity: sha512-wvsSIkheUIPJZCWIB5w8UfbSDLbMzPLgQxIyHhcw40GXt+4HT7drqeVF4dbC59Nm/+2Du1YDhaoWOsYcGGgeoQ==}
 
   '@spectrum-icons/ui@3.7.0':
     resolution: {integrity: sha512-86iQSDfJb3Ama1WSJ/mEiFy4DJT7e/v4pSmEuX4aKKMzbNYft+O40N18S2POUnmblrb7MQneLC/pgIp1SDBwEQ==}
@@ -1535,6 +1541,8 @@ snapshots:
   '@rolldown/pluginutils@1.0.0-rc.17': {}
 
   '@rolldown/pluginutils@1.0.0-rc.7': {}
+
+  '@sightread/jasmid.ts@2.1.5': {}
 
   '@spectrum-icons/ui@3.7.0(@adobe/react-spectrum@3.47.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
