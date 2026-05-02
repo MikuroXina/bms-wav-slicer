@@ -50,7 +50,7 @@ export const MenuBar = () => {
             children: (
                 <Dropdown.Menu>
                     <Dropdown.Item id="add-track" onClick={() => addTrack(dispatch)}>
-                        <Label>Add track…</Label>
+                        <Label>Add Track…</Label>
                         <Kbd className="ms-auto" slot="keyboard" variant="light">
                             <Kbd.Abbr keyValue="command" />
                             <Kbd.Content>A</Kbd.Content>

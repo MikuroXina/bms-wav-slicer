@@ -37,7 +37,7 @@ export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
         );
     }
     return (
-        <div className="grid w-full grid-cols-[160px_1fr] grid-rows-[20px_1fr]">
+        <div className="grid w-full grid-cols-[160px_1fr] grid-rows-[2rem_1fr]">
             <div className="col-start-2 h-8">
                 <Ruler xScale={1} viewportX={0} marks={rulerMarks} />
             </div>
@@ -48,7 +48,7 @@ export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
             </div>
             <div>
                 {Object.entries(tracks).map(([key, props]) => (
-                    <TrackBody {...props} key={key} />
+                    <TrackBody {...props} xScale={1} key={key} />
                 ))}
             </div>
         </div>
