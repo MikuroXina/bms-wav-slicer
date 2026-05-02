@@ -1,10 +1,9 @@
 import { Label } from "@heroui/react/label";
-import { useEffect, useRef, useState } from "react";
 
 import type { Track, WavAsset } from "../model/project.js";
 import type { RulerMark } from "../model/ruler-mark.js";
-import { createWaveform, type Waveform } from "../model/waveform.js";
 import { Ruler } from "./track-list/ruler.js";
+import { TrackBody } from "./track-list/track-body.js";
 
 interface TrackHeadProps {
     id: string;
@@ -23,35 +22,20 @@ const TrackHead = ({ id, file }: TrackHeadProps) => {
     );
 };
 
-interface TrackBodyProps {
-    file: File;
-}
-
-const TrackBody = ({ file }: TrackBodyProps) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [waveform, setWaveform] = useState<Waveform | null>(null);
-    useEffect(() => {
-        const aborter = new AbortController();
-        createWaveform(file).then((wav) => {
-            if (aborter.signal.aborted) {
-                return;
-            }
-            setWaveform(wav);
-        });
-        return () => {
-            aborter.abort();
-        };
-    }, [file]);
-
-    return <canvas ref={canvasRef} className="h-20 w-full"></canvas>;
-};
-
 export interface TrackListProps {
     tracks: Record<Track, WavAsset>;
     rulerMarks: readonly RulerMark[];
 }
 
 export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
+    const isEmpty = Object.entries(tracks).length === 0;
+    if (isEmpty) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <p className="text-center">Open Track menu to Add your assets</p>
+            </div>
+        );
+    }
     return (
         <div className="grid w-full grid-cols-[160px_1fr] grid-rows-[20px_1fr]">
             <div className="col-start-2 h-8">
