@@ -25,19 +25,12 @@ export function fromMidiEvents(
     events: readonly MidiEvent[],
 ): RulerMark[] {
     /** micro-seconds per quarter beat */
-    let tempo = 500;
+    let tempo = 50000;
     /** quarter beats per section */
     let sectionLen = 4;
     let currentMs = 0;
     const ret: RulerMark[] = [];
     for (const event of events) {
-        if (event.type === "meta" && event.subType === "setTempo") {
-            ret.push({
-                type: "TEMPO_CHANGE",
-                at: currentMs as MicroSecond,
-                tempo: event.microsecondsPerBeat as Tempo,
-            });
-        }
         const deltaMs = (tempo * event.deltaTime) / resolution;
         for (let i = 0; i * tempo < deltaMs; ++i) {
             const offset = i * tempo;
@@ -50,6 +43,11 @@ export function fromMidiEvents(
         if (event.type === "meta") {
             if (event.subType === "setTempo") {
                 tempo = event.microsecondsPerBeat;
+                ret.push({
+                    type: "TEMPO_CHANGE",
+                    at: currentMs as MicroSecond,
+                    tempo: event.microsecondsPerBeat as Tempo,
+                });
             }
             if (event.subType === "timeSignature") {
                 sectionLen = (4 * event.numerator) / event.denominator;

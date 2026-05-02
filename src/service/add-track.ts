@@ -7,11 +7,7 @@ export function addTrack(dispatch: Dispatch) {
 
     fileInput.addEventListener("change", () => {
         const { files } = fileInput;
-        if (files == null) {
-            return;
-        }
-
-        const file = files.item(0);
+        const file = files?.item(0);
         if (file == null) {
             return;
         }

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import type { RulerMark } from "../../model/ruler-mark.js";
 
-const WIDTH_PER_MS = 20 / 1000;
+const WIDTH_PER_MS = 1e-4;
 
 export interface RulerProps {
     xScale: number;
@@ -53,12 +53,12 @@ export const Ruler = ({ xScale, viewportX, marks }: RulerProps) => {
                     break;
                 case "TEMPO_CHANGE":
                     ctx.font = `${Math.floor(0.5 * height)}px monospace`;
-                    ctx.fillText(((60 * 1000) / mark.tempo).toFixed(2), x, height);
+                    ctx.fillText(((60 * 1000 * 1000) / mark.tempo).toFixed(2), x, height);
                     break;
             }
         }
         ctx.stroke();
-    }, [xScale, viewportX]);
+    }, [xScale, viewportX, marks]);
 
     return <canvas ref={canvasRef} className="h-full w-full"></canvas>;
 };

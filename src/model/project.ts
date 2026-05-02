@@ -24,11 +24,11 @@ export const initialSlicerProject: SlicerProject = {
         {
             type: "TEMPO_CHANGE",
             at: 0 as MicroSecond,
-            tempo: 500 as Tempo,
+            tempo: 500000 as Tempo,
         },
         ...[...new Array(10)].map((_, i) => ({
             type: (i % 4 === 0 ? "SECTION_LINE" : "BEAT_LINE") as "SECTION_LINE" | "BEAT_LINE",
-            at: (i * 1000) as MicroSecond,
+            at: (i * 500000) as MicroSecond,
         })),
     ],
     undoStack: [],

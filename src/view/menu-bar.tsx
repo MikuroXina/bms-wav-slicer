@@ -5,7 +5,9 @@ import { Label } from "@heroui/react/label";
 import type { ReactNode } from "react";
 
 import { useDispatch } from "../model/action.js";
+import { useLoading } from "../model/loading.js";
 import { addTrack } from "../service/add-track.js";
+import { importMidi } from "../service/import-midi.js";
 
 interface MenuItemProps {
     key: string;
@@ -24,6 +26,7 @@ const MenuItem = ({ name, children }: MenuItemProps) => {
 
 export const MenuBar = () => {
     const dispatch = useDispatch();
+    const { setIsLoading } = useLoading();
 
     const menuItems: readonly MenuItemProps[] = [
         {
@@ -51,6 +54,16 @@ export const MenuBar = () => {
                         <Kbd className="ms-auto" slot="keyboard" variant="light">
                             <Kbd.Abbr keyValue="command" />
                             <Kbd.Content>A</Kbd.Content>
+                        </Kbd>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        id="import-midi"
+                        onClick={() => importMidi(dispatch, setIsLoading)}
+                    >
+                        <Label>Import MIDI…</Label>
+                        <Kbd className="ms-auto" slot="keyboard" variant="light">
+                            <Kbd.Abbr keyValue="command" />
+                            <Kbd.Content>M</Kbd.Content>
                         </Kbd>
                     </Dropdown.Item>
                 </Dropdown.Menu>

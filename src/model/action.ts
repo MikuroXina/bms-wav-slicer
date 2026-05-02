@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 export type SlicerAction =
-    | { type: "IMPORT_MIDI"; midiFile: File }
+    | { type: "IMPORT_MIDI"; midiFileArrayBuffer: ArrayBuffer }
     | { type: "ADD_TRACK"; audioFile: File };
 
 export type Dispatch = (action: SlicerAction) => void;
