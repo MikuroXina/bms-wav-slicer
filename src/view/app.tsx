@@ -6,6 +6,7 @@ import { initialSlicerProject } from "../model/project.js";
 import { reducer } from "../model/store.js";
 import { LoadingCover } from "./loading-cover.js";
 import { MenuBar } from "./menu-bar.js";
+import { Ribbon } from "./ribbon.js";
 import { TrackList } from "./track-list.js";
 
 export const App = (): JSX.Element => {
@@ -16,6 +17,7 @@ export const App = (): JSX.Element => {
             <DispatchContext.Provider value={dispatch}>
                 <main className="bg-background h-screen w-screen">
                     <MenuBar />
+                    <Ribbon quantizeMode={state.quantizeMode} />
                     <TrackList tracks={state.assets} rulerMarks={state.rulerMarks} />
                 </main>
                 {isLoading && <LoadingCover />}

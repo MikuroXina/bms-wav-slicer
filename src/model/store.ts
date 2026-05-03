@@ -23,5 +23,15 @@ export function reducer(state: SlicerProject, action: SlicerAction): SlicerProje
             draft.rulerMarks = marks;
         });
     }
+    if (action.type === "SET_QUANTIZE_TYPE") {
+        return produce(state, (draft) => {
+            draft.quantizeMode.type = action.newType;
+        });
+    }
+    if (action.type === "TOGGLE_QUANTIZE_TRIPLET") {
+        return produce(state, (draft) => {
+            draft.quantizeMode.isTriplet = !draft.quantizeMode.isTriplet;
+        });
+    }
     throw new Error("todo");
 }

@@ -31,7 +31,7 @@ export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
     const isEmpty = Object.entries(tracks).length === 0;
     if (isEmpty) {
         return (
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="flex w-full items-center justify-center">
                 <p className="text-center">Open Track menu to Add your assets</p>
             </div>
         );
