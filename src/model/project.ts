@@ -30,7 +30,7 @@ export const initialSlicerProject: SlicerProject = {
         },
         ...[...new Array(10)].map((_, i) => ({
             type: (i % 4 === 0 ? "SECTION_LINE" : "BEAT_LINE") as "SECTION_LINE" | "BEAT_LINE",
-            at: (i * 500000) as MicroSecond,
+            at: (i * 500 * 1000) as MicroSecond,
         })),
     ],
     quantizeMode: {

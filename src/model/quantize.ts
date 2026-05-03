@@ -25,4 +25,4 @@ const beatQuantum: Record<QuantizeType, number> = {
 };
 
 export const toStride = (mode: QuantizeMode, resolution: TickResolution): MusicTick =>
-    ((resolution * beatQuantum[mode.type]) / (mode.isTriplet ? 1 : 3)) as MusicTick;
+    ((resolution * beatQuantum[mode.type]) / (mode.isTriplet ? 3 : 1)) as MusicTick;

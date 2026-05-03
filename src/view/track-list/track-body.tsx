@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { createWaveform, type Waveform } from "../../model/waveform.js";
-
-const X_PER_SAMPLE = 2.5;
+import { X_PER_SAMPLE } from "./waveform-def.js";
 
 function smooth(array: Float32Array, stride: number): Float32Array {
     const peak = array.map((v) => v * v).reduce((a, b) => Math.max(a, b), 0);
@@ -66,7 +65,7 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
         ctx.scale(devicePixelRatio, devicePixelRatio);
         ctx.fillStyle = "black";
         waveform.polygon(0, 4).then((buf) => {
-            const topChannel = smooth(buf.getChannelData(0), 1200);
+            const topChannel = buf.getChannelData(0);
             ctx.beginPath();
             ctx.moveTo(0, 0.5 * height);
             for (let i = 0; i < topChannel.length; ++i) {
@@ -81,7 +80,7 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
             ctx.beginPath();
             ctx.moveTo(0, 0.5 * height);
             for (let i = 0; i < bottomChannel.length; ++i) {
-                const sample = topChannel[i]!;
+                const sample = bottomChannel[i]!;
                 ctx.lineTo(i * xScale * X_PER_SAMPLE, (0.5 + sample / 2) * height);
             }
             ctx.lineTo(bottomChannel.length - 1, 0.5 * height);

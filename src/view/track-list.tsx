@@ -59,6 +59,7 @@ export const TrackList = ({ resolution, quantizeMode, tracks, rulerMarks }: Trac
                     resolution={resolution}
                     quantizeMode={quantizeMode}
                     sectionLines={rulerMarks.filter((mark) => mark.type === "SECTION_LINE")}
+                    tempoChanges={rulerMarks.filter((mark) => mark.type === "TEMPO_CHANGE")}
                 />
             </div>
         </div>

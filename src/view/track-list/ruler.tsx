@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import type { RulerMark } from "../../model/ruler-mark.js";
-
-const WIDTH_PER_MS = 1e-4;
+import { WIDTH_PER_MS } from "./waveform-def.js";
 
 export interface RulerProps {
     xScale: number;
