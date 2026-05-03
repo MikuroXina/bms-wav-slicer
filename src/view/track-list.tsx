@@ -1,7 +1,10 @@
 import { Label } from "@heroui/react/label";
 
 import type { Track, WavAsset } from "../model/project.js";
+import type { QuantizeMode } from "../model/quantize.js";
 import type { RulerMark } from "../model/ruler-mark.js";
+import type { TickResolution } from "../model/time.js";
+import { PlayerOverlay } from "./player-overlay.js";
 import { Ruler } from "./track-list/ruler.js";
 import { TrackBody } from "./track-list/track-body.js";
 
@@ -23,11 +26,13 @@ const TrackHead = ({ id, file }: TrackHeadProps) => {
 };
 
 export interface TrackListProps {
+    resolution: TickResolution;
+    quantizeMode: QuantizeMode;
     tracks: Record<Track, WavAsset>;
     rulerMarks: readonly RulerMark[];
 }
 
-export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
+export const TrackList = ({ resolution, quantizeMode, tracks, rulerMarks }: TrackListProps) => {
     const isEmpty = Object.entries(tracks).length === 0;
     if (isEmpty) {
         return (
@@ -46,10 +51,15 @@ export const TrackList = ({ tracks, rulerMarks }: TrackListProps) => {
                     <TrackHead {...props} key={key} />
                 ))}
             </div>
-            <div>
+            <div className="relative">
                 {Object.entries(tracks).map(([key, props]) => (
                     <TrackBody {...props} xScale={1} key={key} />
                 ))}
+                <PlayerOverlay
+                    resolution={resolution}
+                    quantizeMode={quantizeMode}
+                    sectionLines={rulerMarks.filter((mark) => mark.type === "SECTION_LINE")}
+                />
             </div>
         </div>
     );

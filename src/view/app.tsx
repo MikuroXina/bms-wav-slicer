@@ -18,7 +18,12 @@ export const App = (): JSX.Element => {
                 <main className="bg-background h-screen w-screen">
                     <MenuBar />
                     <Ribbon quantizeMode={state.quantizeMode} />
-                    <TrackList tracks={state.assets} rulerMarks={state.rulerMarks} />
+                    <TrackList
+                        resolution={state.resolution}
+                        quantizeMode={state.quantizeMode}
+                        tracks={state.assets}
+                        rulerMarks={state.rulerMarks}
+                    />
                 </main>
                 {isLoading && <LoadingCover />}
             </DispatchContext.Provider>
