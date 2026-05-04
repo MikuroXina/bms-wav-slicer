@@ -24,6 +24,7 @@ export const App = (): JSX.Element => {
                         xScale={state.xScale}
                         tracks={state.assets}
                         rulerMarks={state.rulerMarks}
+                        sliceMarks={state.sliceMarks}
                     />
                 </main>
                 {isLoading && <LoadingCover />}

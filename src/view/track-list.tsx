@@ -3,6 +3,7 @@ import { Label } from "@heroui/react/label";
 import type { Track, WavAsset } from "../model/project.js";
 import type { QuantizeMode } from "../model/quantize.js";
 import type { RulerMark } from "../model/ruler-mark.js";
+import type { SliceMark } from "../model/slice-mark.js";
 import type { TickResolution } from "../model/time.js";
 import { PlayerOverlay } from "./player-overlay.js";
 import { Ruler } from "./track-list/ruler.js";
@@ -31,6 +32,7 @@ export interface TrackListProps {
     xScale: number;
     tracks: Record<Track, WavAsset>;
     rulerMarks: readonly RulerMark[];
+    sliceMarks: Record<Track, readonly SliceMark[]>;
 }
 
 export const TrackList = ({
@@ -39,6 +41,7 @@ export const TrackList = ({
     xScale,
     tracks,
     rulerMarks,
+    sliceMarks,
 }: TrackListProps) => {
     const isEmpty = Object.entries(tracks).length === 0;
     if (isEmpty) {
@@ -60,7 +63,12 @@ export const TrackList = ({
             </div>
             <div className="relative">
                 {Object.entries(tracks).map(([key, props]) => (
-                    <TrackBody {...props} xScale={xScale} key={key} />
+                    <TrackBody
+                        {...props}
+                        xScale={xScale}
+                        sliceMarks={sliceMarks[key as Track] ?? []}
+                        key={key}
+                    />
                 ))}
                 <PlayerOverlay
                     resolution={resolution}

@@ -1,33 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
+import type { SliceMark } from "../../model/slice-mark.js";
 import { createWaveform, type Waveform } from "../../model/waveform.js";
-import { X_PER_SAMPLE } from "./waveform-def.js";
-
-function smooth(array: Float32Array, stride: number): Float32Array {
-    const peak = array.map((v) => v * v).reduce((a, b) => Math.max(a, b), 0);
-    const ret = new Float32Array(Math.ceil(array.length / stride));
-    if (peak < 1e-8) {
-        return ret;
-    }
-
-    for (let i = 0; i < ret.length; ++i) {
-        let sum = 0;
-        for (let j = 0; j < stride; ++j) {
-            if (i + j < array.length) {
-                sum += array[i * stride + j]! ** 2 / peak;
-            }
-        }
-        ret[i] = sum / stride;
-    }
-    return ret;
-}
+import { WIDTH_PER_MS, X_PER_SAMPLE } from "./waveform-def.js";
 
 export interface TrackBodyProps {
     file: File;
     xScale: number;
+    sliceMarks: readonly SliceMark[];
 }
 
-export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
+export const TrackBody = ({ file, xScale, sliceMarks }: TrackBodyProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [waveform, setWaveform] = useState<Waveform | null>(null);
     useEffect(() => {
@@ -87,5 +70,18 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
         });
     }, [waveform, xScale]);
 
-    return <canvas ref={canvasRef} className="h-20 w-full"></canvas>;
+    return (
+        <>
+            <canvas ref={canvasRef} className="h-20 w-full" />
+            {sliceMarks.map((mark) => (
+                <div
+                    className="absolute top-0 left-0 h-full w-1 border-l-1 border-dashed border-[#999]"
+                    key={mark.at}
+                    style={{
+                        transform: `translateX(${mark.at * xScale * WIDTH_PER_MS}px)`,
+                    }}
+                ></div>
+            ))}
+        </>
+    );
 };

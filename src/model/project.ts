@@ -1,6 +1,7 @@
 import type { SlicerAction } from "./action.js";
 import type { QuantizeMode } from "./quantize.js";
 import type { RulerMark } from "./ruler-mark.js";
+import type { SliceMark } from "./slice-mark.js";
 import type { MicroSecond, Tempo, TickResolution } from "./time.js";
 
 declare const trackBrand: unique symbol;
@@ -16,6 +17,7 @@ export interface SlicerProject {
     readonly xScale: number;
     readonly assets: Record<Track, WavAsset>;
     readonly rulerMarks: readonly RulerMark[];
+    readonly sliceMarks: Record<Track, readonly SliceMark[]>;
     readonly quantizeMode: QuantizeMode;
     readonly undoStack: readonly SlicerAction[];
 }
@@ -35,6 +37,7 @@ export const initialSlicerProject: SlicerProject = {
             at: (i * 500 * 1000) as MicroSecond,
         })),
     ],
+    sliceMarks: {},
     quantizeMode: {
         type: "1/8",
         isTriplet: false,

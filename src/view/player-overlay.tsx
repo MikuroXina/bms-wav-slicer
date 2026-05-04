@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
+import { useDispatch } from "../model/action.js";
+import type { Track } from "../model/project.js";
 import { toStride, type QuantizeMode } from "../model/quantize.js";
 import type { SectionLine, TempoChange } from "../model/ruler-mark.js";
 import type { MicroSecond, Tempo, TickResolution } from "../model/time.js";
@@ -64,6 +66,7 @@ export const PlayerOverlay = ({
     sectionLines,
     tempoChanges,
 }: PlayerOverlayProps) => {
+    const dispatch = useDispatch();
     const divRef = useRef<HTMLDivElement>(null);
     const markerRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -96,8 +99,32 @@ export const PlayerOverlay = ({
         };
     }, [resolution, quantizeMode, sectionLines, tempoChanges]);
 
+    function onClickWaveform(e: React.MouseEvent) {
+        if (divRef.current == null) {
+            return;
+        }
+
+        const { left } = divRef.current.getBoundingClientRect();
+        const clickMs = (((e.clientX - left) * MICROSECOND_PER_X) / xScale) as MicroSecond;
+        const nearestSection = findNearest(clickMs, sectionLines);
+        const tempo = findTempoAt(clickMs, tempoChanges);
+        const quantum = toStride(quantizeMode, resolution);
+        const quantumMs = (quantum * tempo * xScale) / resolution;
+        const snapMs = (Math.round((clickMs - nearestSection.at) / quantumMs) * quantumMs +
+            nearestSection.at) as MicroSecond;
+        dispatch({
+            type: "TOGGLE_SLICE_MARK",
+            at: snapMs,
+            track: "0" as Track,
+        });
+    }
+
     return (
-        <div ref={divRef} className="absolute top-0 left-0 z-10 h-full w-full">
+        <div
+            onClick={onClickWaveform}
+            ref={divRef}
+            className="absolute top-0 left-0 z-10 h-full w-full"
+        >
             <div ref={markerRef} className="border-accent h-full w-[1px] border-1" />
         </div>
     );
