@@ -37,7 +37,7 @@ export const Ruler = ({ xScale, viewportX, marks }: RulerProps) => {
         let section = 1;
         for (const mark of marks) {
             const { at, type } = mark;
-            const x = WIDTH_PER_MS * at;
+            const x = xScale * WIDTH_PER_MS * at;
             switch (type) {
                 case "SECTION_LINE":
                     ctx.moveTo(x, 0);

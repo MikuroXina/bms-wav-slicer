@@ -28,11 +28,18 @@ const TrackHead = ({ id, file }: TrackHeadProps) => {
 export interface TrackListProps {
     resolution: TickResolution;
     quantizeMode: QuantizeMode;
+    xScale: number;
     tracks: Record<Track, WavAsset>;
     rulerMarks: readonly RulerMark[];
 }
 
-export const TrackList = ({ resolution, quantizeMode, tracks, rulerMarks }: TrackListProps) => {
+export const TrackList = ({
+    resolution,
+    quantizeMode,
+    xScale,
+    tracks,
+    rulerMarks,
+}: TrackListProps) => {
     const isEmpty = Object.entries(tracks).length === 0;
     if (isEmpty) {
         return (
@@ -44,7 +51,7 @@ export const TrackList = ({ resolution, quantizeMode, tracks, rulerMarks }: Trac
     return (
         <div className="grid w-full grid-cols-[160px_1fr] grid-rows-[2rem_1fr]">
             <div className="col-start-2 h-8">
-                <Ruler xScale={1} viewportX={0} marks={rulerMarks} />
+                <Ruler xScale={xScale} viewportX={0} marks={rulerMarks} />
             </div>
             <div className="sticky flex flex-col border-r">
                 {Object.entries(tracks).map(([key, props]) => (
@@ -53,11 +60,12 @@ export const TrackList = ({ resolution, quantizeMode, tracks, rulerMarks }: Trac
             </div>
             <div className="relative">
                 {Object.entries(tracks).map(([key, props]) => (
-                    <TrackBody {...props} xScale={1} key={key} />
+                    <TrackBody {...props} xScale={xScale} key={key} />
                 ))}
                 <PlayerOverlay
                     resolution={resolution}
                     quantizeMode={quantizeMode}
+                    xScale={xScale}
                     sectionLines={rulerMarks.filter((mark) => mark.type === "SECTION_LINE")}
                     tempoChanges={rulerMarks.filter((mark) => mark.type === "TEMPO_CHANGE")}
                 />

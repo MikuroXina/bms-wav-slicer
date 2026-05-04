@@ -29,7 +29,6 @@ export interface TrackBodyProps {
 
 export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const sizeRef = useRef<[number, number] | null>(null);
     const [waveform, setWaveform] = useState<Waveform | null>(null);
     useEffect(() => {
         const aborter = new AbortController();
@@ -49,11 +48,7 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
         }
 
         const canvas = canvasRef.current;
-        if (sizeRef.current == null) {
-            const rect = canvas.getBoundingClientRect();
-            sizeRef.current = [rect.width, rect.height];
-        }
-        const [width, height] = sizeRef.current;
+        const { width, height } = canvas.getBoundingClientRect();
         canvas.width = width * devicePixelRatio;
         canvas.height = height * devicePixelRatio;
         const ctx = canvas.getContext("2d");
@@ -62,15 +57,18 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
         }
 
         ctx.clearRect(0, 0, width, height);
-        ctx.scale(devicePixelRatio, devicePixelRatio);
+        ctx.scale(xScale * devicePixelRatio, devicePixelRatio);
         ctx.fillStyle = "black";
-        waveform.polygon(0, 4).then((buf) => {
+        const windowSeconds = Math.max(width / xScale / X_PER_SAMPLE / 48000, 1e-4);
+        const startSeconds = 0;
+        const endSeconds = startSeconds + windowSeconds;
+        waveform.polygon(startSeconds, endSeconds).then((buf) => {
             const topChannel = buf.getChannelData(0);
             ctx.beginPath();
             ctx.moveTo(0, 0.5 * height);
             for (let i = 0; i < topChannel.length; ++i) {
                 const sample = topChannel[i]!;
-                ctx.lineTo(i * xScale * X_PER_SAMPLE, (0.5 - sample / 2) * height);
+                ctx.lineTo(i * X_PER_SAMPLE, (0.5 - sample / 2) * height);
             }
             ctx.lineTo(topChannel.length - 1, 0.5 * height);
             ctx.closePath();
@@ -81,7 +79,7 @@ export const TrackBody = ({ file, xScale }: TrackBodyProps) => {
             ctx.moveTo(0, 0.5 * height);
             for (let i = 0; i < bottomChannel.length; ++i) {
                 const sample = bottomChannel[i]!;
-                ctx.lineTo(i * xScale * X_PER_SAMPLE, (0.5 + sample / 2) * height);
+                ctx.lineTo(i * X_PER_SAMPLE, (0.5 + sample / 2) * height);
             }
             ctx.lineTo(bottomChannel.length - 1, 0.5 * height);
             ctx.closePath();

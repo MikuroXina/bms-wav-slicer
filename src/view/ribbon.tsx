@@ -1,6 +1,7 @@
 import { Button } from "@heroui/react/button";
 import { Dropdown } from "@heroui/react/dropdown";
 import { Label } from "@heroui/react/label";
+import { Slider } from "@heroui/react/slider";
 
 import { useDispatch } from "../model/action.js";
 import { quantizeTypes, type QuantizeMode, type QuantizeType } from "../model/quantize.js";
@@ -16,15 +17,44 @@ const quantizeLabel: Record<QuantizeType, string> = {
 };
 
 export interface RibbonProps {
+    xScale: number;
     quantizeMode: QuantizeMode;
 }
 
-export const Ribbon = ({ quantizeMode }: RibbonProps) => {
+export const Ribbon = ({ xScale, quantizeMode }: RibbonProps) => {
     const dispatch = useDispatch();
 
     return (
         <div className="flex w-full justify-between border-b p-1">
-            <div></div>
+            <div className="flex items-center">
+                <Slider
+                    className="flex w-32 flex-row items-center"
+                    aria-label="Horizontal scale"
+                    value={20 * Math.log10(xScale)}
+                    minValue={-10}
+                    maxValue={10}
+                    step={1}
+                    onChange={(value: number) => {
+                        dispatch({
+                            type: "PREVIEW_HORIZONTAL_SCALE",
+                            newScale: Math.pow(10, value / 20),
+                        });
+                    }}
+                    onChangeEnd={(value: number) => {
+                        dispatch({
+                            type: "SET_HORIZONTAL_SCALE",
+                            oldScale: xScale,
+                            newScale: Math.pow(10, value / 20),
+                        });
+                    }}
+                >
+                    ←→
+                    <Slider.Track>
+                        <Slider.Fill />
+                        <Slider.Thumb className="size-1 rounded-full bg-transparent" />
+                    </Slider.Track>
+                </Slider>
+            </div>
             <div>
                 <Dropdown>
                     <Button variant="secondary">Set Quantize</Button>

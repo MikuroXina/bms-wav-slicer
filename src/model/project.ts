@@ -13,6 +13,7 @@ export interface WavAsset {
 
 export interface SlicerProject {
     readonly resolution: TickResolution;
+    readonly xScale: number;
     readonly assets: Record<Track, WavAsset>;
     readonly rulerMarks: readonly RulerMark[];
     readonly quantizeMode: QuantizeMode;
@@ -21,6 +22,7 @@ export interface SlicerProject {
 
 export const initialSlicerProject: SlicerProject = {
     resolution: 240 as TickResolution,
+    xScale: 1,
     assets: {},
     rulerMarks: [
         {

@@ -33,5 +33,15 @@ export function reducer(state: SlicerProject, action: SlicerAction): SlicerProje
             draft.quantizeMode.isTriplet = !draft.quantizeMode.isTriplet;
         });
     }
+    if (action.type === "PREVIEW_HORIZONTAL_SCALE") {
+        return produce(state, (draft) => {
+            draft.xScale = action.newScale;
+        });
+    }
+    if (action.type === "SET_HORIZONTAL_SCALE") {
+        return produce(state, (draft) => {
+            draft.xScale = action.newScale;
+        });
+    }
     throw new Error("todo");
 }

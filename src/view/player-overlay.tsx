@@ -52,6 +52,7 @@ function findTempoAt(microSeconds: MicroSecond, tempoChanges: readonly TempoChan
 export interface PlayerOverlayProps {
     resolution: TickResolution;
     quantizeMode: QuantizeMode;
+    xScale: number;
     sectionLines: readonly SectionLine[];
     tempoChanges: readonly TempoChange[];
 }
@@ -59,6 +60,7 @@ export interface PlayerOverlayProps {
 export const PlayerOverlay = ({
     resolution,
     quantizeMode,
+    xScale,
     sectionLines,
     tempoChanges,
 }: PlayerOverlayProps) => {
@@ -77,13 +79,13 @@ export const PlayerOverlay = ({
 
             const markerX = e.clientX - left;
 
-            const markerMs = (markerX * MICROSECOND_PER_X) as MicroSecond;
+            const markerMs = ((markerX * MICROSECOND_PER_X) / xScale) as MicroSecond;
             const nearestSection = findNearest(markerMs, sectionLines);
-            const nearestSectionX = nearestSection.at / MICROSECOND_PER_X;
+            const nearestSectionX = (nearestSection.at * xScale) / MICROSECOND_PER_X;
 
             const tempo = findTempoAt(markerMs, tempoChanges);
             const quantum = toStride(quantizeMode, resolution);
-            const strideX = ((quantum / resolution) * tempo) / MICROSECOND_PER_X;
+            const strideX = (quantum * tempo * xScale) / resolution / MICROSECOND_PER_X;
             const snapX =
                 Math.round((markerX - nearestSectionX) / strideX) * strideX + nearestSectionX;
             markerRef.current.style.transform = `translateX(${snapX}px)`;

@@ -17,10 +17,11 @@ export const App = (): JSX.Element => {
             <DispatchContext.Provider value={dispatch}>
                 <main className="bg-background h-screen w-screen">
                     <MenuBar />
-                    <Ribbon quantizeMode={state.quantizeMode} />
+                    <Ribbon xScale={state.xScale} quantizeMode={state.quantizeMode} />
                     <TrackList
                         resolution={state.resolution}
                         quantizeMode={state.quantizeMode}
+                        xScale={state.xScale}
                         tracks={state.assets}
                         rulerMarks={state.rulerMarks}
                     />
