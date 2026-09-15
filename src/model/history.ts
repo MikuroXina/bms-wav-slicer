@@ -1,7 +1,5 @@
 import type { SlicerProject, Track } from "./project.js";
 
-export const LOCAL_STORAGE_KEY = "BMS_WAV_SLICER_V1" as const;
-
 declare const isoDateStringBrand: unique symbol;
 export type IsoDateString = string & { [isoDateStringBrand]: never };
 
