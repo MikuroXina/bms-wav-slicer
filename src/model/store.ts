@@ -34,6 +34,15 @@ function findSliceMark(
 }
 
 export function reducer(state: SlicerProject, action: SlicerAction): SlicerProject {
+    if (action.type === "SAVE") {
+        return produce(state, (draft) => {
+            draft.saved = true;
+        });
+    }
+
+    state = produce(state, (draft) => {
+        draft.saved = false;
+    });
     if (action.type === "ADD_TRACK") {
         const id = Object.keys(state.assets).length.toString() as Track;
         return produce(state, (draft) => {

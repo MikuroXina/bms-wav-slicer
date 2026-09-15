@@ -34,8 +34,13 @@ export const MenuBar = () => {
             name: "File",
             children: (
                 <Dropdown.Menu>
-                    <Dropdown.Item id="save">
-                        <Label>Save As…</Label>
+                    <Dropdown.Item
+                        id="save"
+                        onClick={() => {
+                            dispatch({ type: "SAVE" });
+                        }}
+                    >
+                        <Label>Save</Label>
                         <Kbd className="ms-auto" slot="keyboard" variant="light">
                             <Kbd.Abbr keyValue="command" />
                             <Kbd.Content>S</Kbd.Content>

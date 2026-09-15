@@ -13,6 +13,7 @@ export interface WavAsset {
 }
 
 export interface SlicerProject {
+    readonly saved: boolean;
     readonly resolution: TickResolution;
     readonly xScale: number;
     readonly assets: Record<Track, WavAsset>;
@@ -23,6 +24,7 @@ export interface SlicerProject {
 }
 
 export const initialSlicerProject: SlicerProject = {
+    saved: false,
     resolution: 240 as TickResolution,
     xScale: 1,
     assets: {},

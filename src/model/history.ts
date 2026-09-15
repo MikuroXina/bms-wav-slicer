@@ -6,7 +6,7 @@ export type IsoDateString = string & { [isoDateStringBrand]: never };
 export const isoStringFromDate = (date: Date): IsoDateString => date.toISOString() as IsoDateString;
 export const isoStringToDate = (str: IsoDateString): Date => new Date(str);
 
-export interface FrozenSlicerProject extends Omit<SlicerProject, "assets"> {
+export interface FrozenSlicerProject extends Omit<SlicerProject, "assets" | "saved"> {
     assets: Record<Track, string>;
 }
 

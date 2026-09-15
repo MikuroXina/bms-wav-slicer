@@ -5,6 +5,7 @@ import type { QuantizeType } from "./quantize.js";
 import type { MicroSecond } from "./time.js";
 
 export type SlicerAction =
+    | { type: "SAVE" }
     | { type: "IMPORT_MIDI"; midiFileArrayBuffer: ArrayBuffer }
     | { type: "ADD_TRACK"; audioFile: File }
     | { type: "SET_QUANTIZE_TYPE"; oldType: QuantizeType; newType: QuantizeType }
