@@ -1,4 +1,4 @@
-import { useReducer, useState, type JSX } from "react";
+import { useEffect, useReducer, useState, type JSX } from "react";
 
 import { localStorageRepo } from "../adaptor/local-storage.js";
 import { DispatchContext, type Dispatch } from "../model/action.js";
@@ -24,6 +24,21 @@ export const App = (): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, initialSlicerProject);
     const afterMiddleware = applyMiddlewares(state, dispatch);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        document.title = `bms-wave-slicer${state.saved ? "" : " (UNSAVED)"}`;
+
+        const onBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (!state.saved) {
+                e.preventDefault();
+            }
+        };
+        window.addEventListener("beforeunload", onBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", onBeforeUnload);
+        };
+    }, [state]);
+
     return (
         <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
             <DispatchContext.Provider value={afterMiddleware}>
